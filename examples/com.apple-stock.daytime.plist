@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- macOS: runs the checker each morning until END. Edit the paths, copy to ~/Library/LaunchAgents/com.apple-stock.plist, then
+     launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.apple-stock.plist -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.apple-stock</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/YOU/apple-stock/examples/run-until.sh</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+    <key>END</key>
+    <string>23:00</string>
+  </dict>
+  <!-- Before the 6:55 pmset wake: a job missed during sleep runs as soon as the Mac wakes. -->
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>6</integer>
+    <key>Minute</key>
+    <integer>50</integer>
+  </dict>
+  <!-- Also start on login if it's before END. -->
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/Users/YOU/Library/Logs/apple-stock.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/YOU/Library/Logs/apple-stock.log</string>
+</dict>
+</plist>

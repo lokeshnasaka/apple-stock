@@ -68,7 +68,7 @@ Then open http://localhost:4321 to pick the country, model, colours, storage and
 
 **On your phone:** browsers only allow push notifications on HTTPS pages, so the phone needs an HTTPS link to the computer. The easiest private way is [Tailscale](https://tailscale.com): install it on both devices, run `tailscale serve --bg 4321` on the computer, and open the `https://<computer>.<tailnet>.ts.net` link it prints. Don't expose the UI on the public internet: anyone who can open it can change the settings.
 
-To keep it running after reboots, see [`examples/com.apple-stock.plist`](examples/com.apple-stock.plist) (macOS launchd) or [`examples/apple-stock.service`](examples/apple-stock.service) (Linux systemd).
+To keep it running after reboots, see [`examples/com.apple-stock.plist`](examples/com.apple-stock.plist) (macOS launchd) or [`examples/apple-stock.service`](examples/apple-stock.service) (Linux systemd). To run it only during the day on a Mac and keep the Mac awake while it does, see [`examples/com.apple-stock.daytime.plist`](examples/com.apple-stock.daytime.plist) with [`examples/run-until.sh`](examples/run-until.sh). A Mac doesn't check while it's asleep, and closing a laptop's lid puts it to sleep.
 
 ## Run it on GitHub Actions
 
@@ -92,6 +92,9 @@ The workflow is scheduled every 5 minutes, but GitHub often starts scheduled run
 | `MODELS` | `all` | Comma-separated part numbers or words that must all appear in the model name, e.g. `256GB Night Sky, 512GB` |
 | `MAX_DISTANCE_KM` | `50` | Ignore stores farther than this |
 | `INTERVAL_SECONDS` | `30` | Time between checks for `npm start` (minimum 30, with ±15% jitter) |
+| `FAST_WINDOW` | (none) | Minutes past each hour to check faster, e.g. `0-15`. Checking starts right at the top of the window |
+| `FAST_INTERVAL_SECONDS` | `30` | Time between checks inside `FAST_WINDOW` |
+| `BLOCKED_WAIT_SECONDS` | `300` | When Apple blocks a check (error 541), wait this long before the next one. You're notified when a block starts and when it clears |
 | `STATE_FILE` | `.state.json` | Where the last seen availability is stored |
 | `HEADLESS` | `true` | Set to `false` to watch the browser |
 
